@@ -4,22 +4,25 @@ app.use(express.json());
 
 app.post('/chat', async (req, res) => {
   const { messages, system } = req.body;
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'anthropic-version': '2023-06-01'
+      'Authorization': `Bearer ${process.env.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}`
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'llama-3.3-70b-versatile',
       max_tokens: 1000,
-      system,
-      messages
+      messages: [
+        { role: 'system', content: system },
+        ...messages
+      ]
     })
   });
   const data = await response.json();
-  res.json(data);
+  const reply = data.choices?.[0]?.message?.content || 'Maaf, cuba lagi!';
+  res.json({ reply });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('Server running on port ' + PORT));
+app.listen(PORT, () => console.log('Running on port ' + PORT));
