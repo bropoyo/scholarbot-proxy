@@ -8,7 +8,7 @@ app.post('/chat', async (req, res) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.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}`
+      'Authorization': `Bearer ${process.env.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}`
     },
     body: JSON.stringify({
       model: 'llama-3.3-70b-versatile',
